@@ -1,0 +1,12 @@
+[submodule "mesa"]
+	path = mesa
+	url = https://gitlab.freedesktop.org/mesa/mesa.git
+[submodule "dxvk"]
+	path = dxvk
+	url = https://github.com/doitsujin/dxvk.git
+[submodule "wine"]
+	path = wine
+	url = git@github.com:cassia-org/wine.git
+[submodule "FEX"]
+	path = FEX
+	url = git@github.com:cassia-org/FEX.git

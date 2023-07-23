@@ -1,0 +1,32 @@
+diff --git a/src/util/log/log.cpp b/src/util/log/log.cpp
+index da8b620d..65446e50 100644
+--- a/src/util/log/log.cpp
++++ b/src/util/log/log.cpp
+@@ -55,12 +55,6 @@ namespace dxvk {
+       const char* prefix = s_prefixes.at(static_cast<uint32_t>(level));
+ 
+       if (!std::exchange(m_initialized, true)) {
+-#ifdef _WIN32
+-        HMODULE ntdll = GetModuleHandleA("ntdll.dll");
+-
+-        if (ntdll)
+-          m_wineLogOutput = reinterpret_cast<PFN_wineLogOutput>(GetProcAddress(ntdll, "__wine_dbg_output"));
+-#endif
+         auto path = getFileName(m_fileName);
+ 
+         if (!path.empty())
+@@ -77,14 +71,9 @@ namespace dxvk {
+         std::string adjusted = outstream.str();
+ 
+         if (!adjusted.empty()) {
+-          if (m_wineLogOutput)
+-            m_wineLogOutput(adjusted.c_str());
+-          else
+             std::cerr << adjusted;
+         }
+ 
+-        if (m_fileStream)
+-          m_fileStream << adjusted;
+       }
+     }
+   }

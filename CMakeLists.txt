@@ -112,7 +112,7 @@ endfunction()
 
 add_autotools_project(wine
                       PRE_CONFIGURE_COMMAND autoreconf -i
-                      CONFIGURE_FLAGS --disable-win16 --disable-tests --with-alsa --with-udev --without-usb --without-v4l2 --with-x --with-vulkan --with-freetype --with-mingw --with-pthread --enable-archs=${DLL_BUILD_ARCHITECTURES}
+                      CONFIGURE_FLAGS --disable-win16 --disable-tests --with-alsa --with-udev --without-usb --without-v4l2 --with-x --with-vulkan --with-freetype --with-mingw --with-pthread --with-gstreamer --enable-archs=${DLL_BUILD_ARCHITECTURES}
                       BUILD_ALWAYS)
 add_dll_meson_project(mesa
                       CONFIGURE_FLAGS -Dgallium-drivers=zink
@@ -127,7 +127,7 @@ if ("aarch64-w64-mingw32" IN_LIST MINGW_DLL_BUILD_TRIPLES)
   ExternalProject_Add(FEX_${DLL_TRIPLE}
     INSTALL_DIR         ${DLL_TRIPLE_PREFIX}
     SOURCE_DIR          ${CMAKE_CURRENT_SOURCE_DIR}/FEX
-    CMAKE_ARGS          -DCMAKE_TOOLCHAIN_FILE=${CMAKE_CURRENT_SOURCE_DIR}/FEX/toolchain_mingw.cmake -DENABLE_JEMALLOC=0 -DENABLE_JEMALLOC_GLIBC_ALLOC=0 -DMINGW_TRIPLE=${DLL_TRIPLE} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DBUILD_TESTS=False -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+    CMAKE_ARGS          -DCMAKE_TOOLCHAIN_FILE=${CMAKE_CURRENT_SOURCE_DIR}/FEX/toolchain_mingw.cmake -DENABLE_JEMALLOC=0 -DENABLE_JEMALLOC_GLIBC_ALLOC=0 -DMINGW_TRIPLE=${DLL_TRIPLE} -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTS=False -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
     CMAKE_COMMAND       ${MINGW_COMMAND} cmake
     LOG_CONFIGURE       TRUE
     LOG_BUILD           TRUE

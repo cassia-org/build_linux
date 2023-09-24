@@ -6,7 +6,7 @@
 	url = https://github.com/doitsujin/dxvk.git
 [submodule "wine"]
 	path = wine
-	url = git@github.com:bylaws/wine.git
+	url = https://github.com/bylaws/wine.git
 [submodule "FEX"]
 	path = FEX
-	url = git@github.com:bylaws/FEX.git
+	url = https://github.com/bylaws/FEX.git

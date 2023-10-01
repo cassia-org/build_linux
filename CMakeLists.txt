@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.10.2)
 project(proj LANGUAGES C CXX ASM VERSION 1.0)
 
 include(ExternalProject)
+include(ProcessorCount)
 
 set(OUTPUT_PREFIX_DIR ${CMAKE_BINARY_DIR}/prefix)
 set(MINGW_SYSROOT_PATH "" CACHE PATH "Path to a mingw compiler sysroot built for the host")
@@ -54,13 +55,20 @@ function(add_autotools_project name)
     set(ARG_INSTALL_TARGET "install")
   endif()
 
+  ProcessorCount(NPROC)
+  if(NOT NPROC EQUAL 0)
+    set(MAKEJOBS -j${NPROC})
+  else()
+    set(MAKEJOBS -j1)
+  endif()
+
   ExternalProject_Add(${name}
     INSTALL_DIR         ${OUTPUT_PREFIX_DIR}
     SOURCE_DIR          ${CMAKE_CURRENT_SOURCE_DIR}/${name}
     DOWNLOAD_COMMAND    COMMAND cd <SOURCE_DIR> && ${ARG_PRE_CONFIGURE_COMMAND}
     CONFIGURE_COMMAND   ${MINGW_COMMAND} <SOURCE_DIR>/configure ${COMPILER_SETTINGS} --prefix=<INSTALL_DIR> --host=${CMAKE_C_COMPILER_TARGET} ${ARG_CONFIGURE_FLAGS}
-    BUILD_COMMAND       ${MINGW_COMMAND} make -j ${ARG_MAKE_TARGET}
-    INSTALL_COMMAND     ${MINGW_COMMAND} make prefix=<INSTALL_DIR> -j ${ARG_INSTALL_TARGET}
+    BUILD_COMMAND       ${MINGW_COMMAND} make ${MAKEJOBS} ${ARG_MAKE_TARGET}
+    INSTALL_COMMAND     ${MINGW_COMMAND} make prefix=<INSTALL_DIR> ${MAKEJOBS} ${ARG_INSTALL_TARGET}
     LOG_CONFIGURE       TRUE
     LOG_BUILD           TRUE
     LOG_INSTALL         TRUE
